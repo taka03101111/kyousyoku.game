@@ -1,0 +1,11 @@
+{
+  "name": "crypto-oni-battle",
+  "version": "1.0.0",
+  "private": true,
+  "description": "暗号鬼討伐 — 情報Ⅰの暗号技術を学ぶ静的クイズゲーム",
+  "scripts": {
+    "start": "node scripts/serve.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "package:static": "node scripts/package.cjs"
+  }
+}

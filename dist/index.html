@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080915">
+  <meta name="description" content="知識を武器に、暗号鬼を討て。高校「情報Ⅰ」の暗号技術を学ぶ、全10問のクイズバトル。">
+  <title>暗号鬼討伐 — CRYPTO ONI BATTLE</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/questions.js" defer></script>
+  <script src="./js/engine.js" defer></script>
+  <script src="./js/animations.js" defer></script>
+  <script src="./js/main.js" defer></script>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">鬼</span><span>CRYPTO<span class="brand-light"> / ONI BATTLE</span></span></div>
+    <div class="header-actions">
+      <span class="subject-label">情報Ⅰ <span>ENCRYPTION LAB</span></span>
+      <button id="sound-toggle" class="tool-button" aria-pressed="false" aria-label="効果音をオンにする"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm5 4 5 6m0-6-5 6"/></svg><span>音声 OFF</span></button>
+      <button id="fullscreen-toggle" class="tool-button" aria-label="全画面表示を切り替える"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg><span>全画面</span></button>
+    </div>
+  </header>
+
+  <main>
+    <section id="title-screen" class="screen title-screen" aria-labelledby="title">
+      <div class="hero-art" aria-hidden="true"><img src="./assets/cipher-oni.png" alt="" fetchpriority="high"><div class="art-vignette"></div><div class="target-reticle"></div><span class="art-coordinate">35° 08′ N / CYPHER SECTOR</span><span class="art-code">01000011<br>01011001<br>01010000</span></div>
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> MISSION 01 <span class="eyebrow-line"></span> 暗号領域、侵入開始。</div>
+        <p class="title-kicker">CRYPTO ONI BATTLE</p>
+        <h1 id="title">暗号鬼<span>討伐</span><span class="title-punctuation">.</span></h1>
+        <p class="hero-tagline">知識を武器に、暗号鬼を討て。</p>
+        <p class="hero-description">立ちはだかるのは、暗号を操る鬼「サイファ」。<br>10問の暗号クイズで鬼を倒せ！</p>
+        <div class="mission-stats" aria-label="全10問、各20秒、8問正解で勝利">
+          <div><strong>10<span>問</span></strong><small>4択の暗号クイズ</small></div>
+          <div><strong>20<span>秒</span></strong><small>1問の制限時間</small></div>
+          <div><strong>8<span>正解</span></strong><small>討伐成功の条件</small></div>
+        </div>
+        <div class="start-actions"><button id="start-button" class="primary-button"><span class="play-icon" aria-hidden="true">▷</span> ゲームスタート <span class="button-arrow" aria-hidden="true">↗</span></button><button id="rules-button" class="text-button"><span class="circle-info" aria-hidden="true">i</span> 遊び方</button></div>
+        <p class="input-hint"><span class="tiny-key">A</span> – <span class="tiny-key">D</span> キー / クリック・タップで回答</p>
+      </div>
+      <div class="enemy-ident"><span class="enemy-cross" aria-hidden="true">＋</span><div><small>YOUR ENEMY</small><strong>暗号鬼 サイファ</strong><span>「その知識で、私の暗号を破れるか？」</span></div><span class="threat-tag">THREAT LV. 08</span></div>
+      <div class="curriculum-strip"><span class="strip-label">MISSION ROUTE <span>攻略する3つの領域</span></span><div><b>01</b><span>共通鍵暗号<small>SYMMETRIC KEY</small></span></div><span class="route-line"></span><div><b>02</b><span>公開鍵暗号<small>PUBLIC KEY</small></span></div><span class="route-line"></span><div><b>03</b><span>暗号の安全性<small>SECURITY</small></span></div><span class="strip-end">SYSTEM READY <i class="status-dot"></i></span></div>
+    </section>
+
+    <section id="battle-screen" class="screen battle-screen" aria-labelledby="question-heading" hidden>
+      <div class="battle-topline"><div class="round-label"><span class="status-dot"></span> BATTLE IN PROGRESS</div><div class="round-info">第 <strong id="round-number">01</strong> 問 <span>/ 全10問</span></div><div class="score-label">正解数 <strong id="score">0</strong><span>/ 10</span></div></div>
+      <div class="battle-layout">
+        <aside class="enemy-panel" aria-label="暗号鬼サイファ">
+          <div class="enemy-top"><span>ENEMY / 001</span><span id="enemy-state">ACTIVE</span></div>
+          <div id="oni" class="oni" data-state="idle"><img src="./assets/cipher-oni.png" alt="2本の角と光るサイバーゴーグルを持ち、黒いスーツを着た暗号鬼サイファ"><div class="oni-shade"></div><span class="oni-impact" aria-hidden="true"></span></div>
+          <div class="enemy-overlay"><span class="enemy-title-small">暗号領域の支配者</span><h2>暗号鬼 サイファ</h2><p id="enemy-quote">「さあ、君の知識を見せてもらおう。」</p></div>
+          <div class="gauge-panel"><div><span>討伐ゲージ</span><strong><span id="gauge-score">0</span><small> / 8</small></strong></div><div id="defeat-gauge" class="defeat-gauge" role="progressbar" aria-label="討伐ゲージ" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><p id="gauge-hint">あと8正解で討伐圏内</p></div>
+        </aside>
+        <div class="question-area">
+          <div class="question-meta"><div><span id="difficulty" class="difficulty">BASIC / 基礎</span><span id="topic" class="topic">共通鍵暗号方式</span></div><div id="timer" class="timer" role="timer" aria-label="残り20秒"><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="timer-track" cx="32" cy="32" r="28"/><circle id="timer-ring" class="timer-ring" cx="32" cy="32" r="28"/></svg><strong id="timer-value">20</strong><small>SEC</small></div></div>
+          <div class="time-track" aria-hidden="true"><div id="time-bar"></div></div>
+          <div class="question-content"><p id="question-label" class="question-label">QUESTION 01</p><h2 id="question-heading" tabindex="-1"></h2></div>
+          <div id="options" class="options" aria-label="回答の選択肢"></div>
+          <div id="answer-hint" class="answer-hint"><span>正しい答えを1つ選択</span><span><kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> または <kbd>1</kbd>–<kbd>4</kbd></span></div>
+          <div id="feedback" class="feedback" hidden aria-live="polite" aria-atomic="true"><div class="feedback-heading"><strong id="feedback-title"></strong><span id="feedback-english"></span></div><p id="explanation"></p><button id="next-button" class="next-button">次の問題へ <span aria-hidden="true">→</span></button></div>
+        </div>
+      </div>
+      <div class="battle-footer"><div id="question-dots" class="question-dots" aria-label="全10問の進捗"></div><span>知識が、いちばん強い武器になる。</span></div>
+      <div id="pause-overlay" class="pause-overlay" hidden><strong>PAUSED</strong><p>画面に戻ると、残り時間から再開します。</p></div>
+    </section>
+
+    <section id="result-screen" class="screen result-screen" aria-labelledby="result-title" hidden>
+      <div class="result-art" aria-hidden="true"><img id="result-oni" src="./assets/cipher-oni.png" alt=""></div>
+      <div class="result-content"><div id="result-eyebrow" class="eyebrow">MISSION COMPLETE</div><p id="result-english" class="result-english">VICTORY</p><h1 id="result-title" tabindex="-1">討伐成功！</h1><p id="result-message"></p><div class="result-score"><strong id="final-score">8</strong><span>/ 10<small>QUESTIONS CORRECT</small></span></div><div id="result-badges" class="result-badges"></div><div class="result-actions"><button id="retry-button" class="primary-button">もう一度挑戦 <span aria-hidden="true">↗</span></button><button id="review-button" class="secondary-button" aria-expanded="false" aria-controls="review-list">回答を振り返る <span aria-hidden="true">↓</span></button></div><button id="home-button" class="text-button">タイトルに戻る</button></div>
+      <div id="review-list" class="review-list" hidden></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span><i class="status-dot"></i> LEARN. DECODE. DEFEAT.</span><span>情報Ⅰ / 暗号技術学習ゲーム <span class="footer-separator">·</span> CRYPTO ONI BATTLE</span></footer>
+  <div id="announcement" class="announcement" role="status" aria-live="polite" hidden></div>
+  <div id="particles" class="particles" aria-hidden="true"></div>
+  <dialog id="rules-dialog" class="rules-dialog" aria-labelledby="rules-title"><button id="rules-close" class="dialog-close" aria-label="遊び方を閉じる">×</button><span class="eyebrow">HOW TO PLAY</span><h2 id="rules-title">暗号鬼、討伐の手引き。</h2><p>全10問、制限時間は各20秒。<br><strong>8問以上正解で暗号鬼を討伐！</strong></p><ol><li><strong>答えを選ぶ</strong><span>4つの選択肢から、クリック・タップ、A〜Dまたは1〜4キーで回答。</span></li><li><strong>解説を読む</strong><span>回答後はタイマーが停止。「次の問題へ」を押すまで、ゆっくり復習できます。</span></li><li><strong>10問で決着</strong><span>基礎4問 → 標準4問 → 難問2問。途中で8正解しても最後まで挑戦します。</span></li></ol><p class="rules-note">画面が非表示になると自動で一時停止します。効果音は初期設定でOFF。OSの「視差効果を減らす」設定にも対応しています。</p><button id="rules-start" class="primary-button">準備完了、ゲームスタート <span aria-hidden="true">→</span></button></dialog>
+  <noscript>このゲームにはJavaScriptが必要です。ブラウザのJavaScriptを有効にしてください。</noscript>
+</body>
+</html>
